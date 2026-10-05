@@ -5,7 +5,8 @@ import Link from "next/link";
 import type { PointerEvent } from "react";
 import type { Topic } from "@/lib/data";
 
-export default function TopicCard({ topic, index = 0, imageWidth = 920, imageHeight = 620, sizes = "(max-width: 560px) 100vw, (max-width: 1199px) 50vw, 26vw", loading }: { topic: Topic; index?: number; imageWidth?: number; imageHeight?: number; sizes?: string; loading?: "eager" | "lazy" }) {
+export default function TopicCard({ topic, index = 0, imageWidth = 920, imageHeight = 620, sizes = "(max-width: 560px) 100vw, (max-width: 1199px) 50vw, 26vw", loading, lessonCount }: { topic: Topic; index?: number; imageWidth?: number; imageHeight?: number; sizes?: string; loading?: "eager" | "lazy"; lessonCount?: number }) {
+  const lessonLabel = lessonCount === undefined ? undefined : `${lessonCount} ${lessonCount === 1 ? "Lesson" : "Lessons"}`;
   function updateGlare(event: PointerEvent<HTMLAnchorElement>) {
     if (event.pointerType === "touch" || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     const link = event.currentTarget;
@@ -26,11 +27,12 @@ export default function TopicCard({ topic, index = 0, imageWidth = 920, imageHei
   }
 
   return (
-    <Link href={`/algorithms/${topic.slug}`} className="topic-image-link" aria-label={`Practice ${topic.title}`} onPointerEnter={updateGlare} onPointerMove={updateGlare} onPointerLeave={resetGlare} onPointerCancel={resetGlare}>
+    <Link href={`/algorithms/${topic.slug}`} className="topic-image-link" aria-label={`Practice ${topic.title}${lessonLabel ? `, ${lessonLabel}` : ""}`} onPointerEnter={updateGlare} onPointerMove={updateGlare} onPointerLeave={resetGlare} onPointerCancel={resetGlare}>
       <span className="topic-image-surface">
         <Image src={topic.image} alt={topic.title} width={imageWidth} height={imageHeight} sizes={sizes} loading={loading ?? (index < 3 ? "eager" : "lazy")} unoptimized={topic.image === "/illustrations/linked-list.png"} />
         <span className="topic-image-glare" aria-hidden="true" />
       </span>
+      {lessonLabel ? <span className="topic-lesson-count">{lessonLabel}</span> : null}
     </Link>
   );
 }

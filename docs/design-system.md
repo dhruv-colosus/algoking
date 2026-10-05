@@ -52,7 +52,7 @@ Use `app/globals.css` as the executable token, shell, and home style source. `ap
 
 ### Tag tones
 
-The retained source `Tag` primitive has a 1px border. Tone names select semantic triplets. Problem rows and detail pages use `DifficultyTag`, which reuses `Tag` at 26px height with 14px type, full pill corners, 10px horizontal padding, and the opaque green/yellow/red tones.
+The retained source `Tag` primitive has a 1px border. Tone names select semantic triplets. Problem rows and detail pages use `DifficultyTag`, which reuses `Tag` at 20.8px height with 11.2px type, full pill corners, 8px horizontal padding, and the opaque green/yellow/red tones.
 
 | Tone | Background | Border | Text |
 | --- | --- | --- | --- |
@@ -118,14 +118,14 @@ The shell shares key reference values, while the larger hero and study content u
 | Header bar | 56px height, 16px horizontal / 14px vertical padding; 14px page/breadcrumb labels |
 | Header tabs | 38px strip, 16px horizontal padding and gap, 12px labels |
 | Main content | Maximum 1390px width; 40px horizontal padding at normal desktop width; 58px at ≥1600px, 28px at ≤1200px, 20px at ≤760px, 16px at ≤560px |
-| Home hero | Text-only layout with no illustration or reserved right column; heading `clamp(48px, 4.2vw, 60px)`, weight 500, line height 1.12; tracking tightened by an additional 1% to `calc(-2px - .01em)`. At ≤560px, 42px type with `calc(-1.3px - .01em)` tracking |
-| Topic grid | Seven cards across the full content width: three beside the hero, four beneath, with 4px gaps (60% less than the previous 10px). No section heading or all-topics link. Below 1200px, three columns after the hero; at ≤560px, a centered column up to 280px with 3.2px gaps (60% less than 8px) |
-| Topic tile | Complete local illustration at natural aspect ratio; image-only link, no additional boundary or metadata |
+| Home hero | Centered text-only layout with centered description and action group, no illustration or reserved column; heading `clamp(48px, 4.2vw, 60px)`, weight 500, line height 1.12; tracking tightened by an additional 1% to `calc(-2px - .01em)`. At ≤560px, 42px type with `calc(-1.3px - .01em)` tracking |
+| Topic grid | Seven cards beneath the hero across the full content width: four equal desktop columns with 8px horizontal and 20px vertical gaps. No section heading or all-topics link. At ≤1100px, two columns; at ≤560px, one full-width column |
+| Topic tile | Local illustration with outer padding trimmed on home; no additional boundary or duplicate title. A 14px soft-text lesson count sits 10px below each home image |
 | Problem table | 38px headers / 42px rows, 12px horizontal cell padding; 14px body type, reduced to 12px at ≤1200px; horizontal scrolling on narrow screens |
-| Difficulty label | 14px type, 26px height, 10px horizontal padding, full pill corners; opaque reference green/yellow/red palettes |
+| Difficulty label | 11.2px type, 20.8px height, 8px horizontal padding, full pill corners; opaque reference green/yellow/red palettes |
 | Study page heading | 32px, weight 500, line height 1.15, -1px tracking; 28px at ≤560px |
 
-Difficulty treatments use the full opaque green/yellow/red source palettes through `DifficultyTag`, with 26px height and 14px text.
+Difficulty treatments use the full opaque green/yellow/red source palettes through `DifficultyTag`, with 20.8px height and 11.2px text.
 
 ### Global layout tokens in the reference
 
@@ -145,7 +145,7 @@ These values exist in source CSS; the source CRM dashboard itself primarily uses
 
 The base radius is 8px (`--radius: 0.5rem`). Derived radii are 4px small, 6px medium, 8px large, and 12px extra large. Buttons and tags are full pills. Navigation and inputs use 8px corners. Surface edges usually use 1px `border` lines.
 
-Home topic links add no boundary, corner clipping, or extra card surface to the supplied illustration. Panels use 8px corners. Difficulty labels and header search use full pill corners.
+Home topic links add no boundary or extra card surface. The image surface trims the artwork's outer padding with 10px corner clipping; roadmap artwork retains its own clipping rules. Panels use 8px corners. Difficulty labels and header search use full pill corners.
 
 | Treatment | Exact reference shadow |
 | --- | --- |
@@ -161,18 +161,20 @@ Button primary hover is `#4b30ff`. Muted hover is `#333333`. Ghost hover is whit
 
 Reference controls transition background, text color, and shadows over 150ms. The primary easing used is `--ease-power3-out: cubic-bezier(.25,1,.5,1)`. Inputs transition only border color. Button focus uses a 2px `ring` at 60% opacity; disabled controls block pointer interaction and use 50% opacity.
 
-Algoking should remain quiet: immediate navigation and modest hover/focus feedback. At the user's request, pattern tiles add cursor-following linear glare at 40% opacity (half the previous intensity), with no radial gradient, and up to four degrees of tilt on each axis for fine hover pointers. Reduced-motion preferences disable tilt, and touch interactions keep the tiles still. Keep visible focus, meaningful link destinations, and text labels on controls. Use semantic tones together with readable difficulty labels.
+Algoking should remain quiet: immediate navigation and modest hover/focus feedback. At the user's request, pattern tiles add cursor-following linear glare at 20% opacity (half the previous 40% intensity), with no radial gradient, and up to four degrees of tilt on each axis for fine hover pointers. Reduced-motion preferences disable tilt, and touch interactions keep the tiles still. Keep visible focus, meaningful link destinations, and text labels on controls. Use semantic tones together with readable difficulty labels.
 
 ## Product direction
 
-Use the reference's dark, restrained dashboard system for DSA study. The main view contains a compact, left-aligned text-only hero, a limited set of illustrated topic cards, and a short useful question list. Sidebar links give quick access to the problem sheet, top algorithms, roadmap, and study-related pages. Dummy content should read like a study product.
+Use the reference's dark, restrained dashboard system for DSA study. The main view contains a compact, centered text-only hero, a limited set of illustrated topic cards, and a short useful question list. Sidebar links give quick access to the problem sheet, top algorithms, roadmap, and study-related pages. Dummy content should read like a study product.
 
 Do not carry over sales pipelines, company owners, billing prompts, account invitations, CRM notifications, or unused media frameworks. Add a dependency or a new shared component only when the implemented interaction needs it. User-supplied topic illustrations are local static assets; keep the home hero free of illustrations unless the user requests one.
 
 ## Current refinement
 
-The source palette table above records provenance. The current primary overrides are `#e5c85c`, hover `#f1d777`, and foreground `#211b0a`; the original layered primary shadow is preserved. Header search uses the source secondary background/foreground/control shadow and full pill corners. Home omits decorative eyebrows, motivational captions, section descriptions, the table caption band, and the footer. Topic tiles render the complete illustration as a link without an additional card boundary or metadata. Difficulty labels use the shared source Tag palette at 26px height / 14px type with fully rounded corners.
+The source palette table above records provenance. The current primary overrides are `#e5c85c`, hover `#f1d777`, and foreground `#211b0a`; the original layered primary shadow is preserved. Header search uses the source secondary background/foreground/control shadow and full pill corners. Home omits decorative eyebrows, motivational captions, section descriptions, the table caption band, and the footer. Home topic tiles trim the outer illustration padding and show mock lesson totals beneath the image, without an additional card boundary. Difficulty labels use the shared source Tag palette at 20.8px height / 11.2px type with fully rounded corners.
 
 The home headline is “Master the patterns.” in the foreground color. The isometric hero illustration and its empty layout column have been removed.
 
-The hero is top-aligned with 24px of desktop space below the header. Topic destinations use `/algorithms/[slug]`, preserving the Algorithms navigation state. The roadmap follows [branding-v1, node 250:37](https://www.figma.com/design/ZdejlIrHPyX6dgvvszUR7T/branding-v1?node-id=250-37): Arrays & Hashing → Two Pointers / Stacks → Linked Lists / Sliding Window / Binary Search → Trees. Individual tile and connector exports live in `public/roadmap`; the layout uses proportional positions in the reference canvas, while CSS clips the exported tile backdrop margins so they do not hide the connectors.
+The centered hero starts after 24px of desktop content padding and sits above the four-column topic grid. Topic destinations use `/algorithms/[slug]`, preserving the Algorithms navigation state. The roadmap follows [branding-v1, node 250:37](https://www.figma.com/design/ZdejlIrHPyX6dgvvszUR7T/branding-v1?node-id=250-37): Arrays & Hashing → Two Pointers / Stacks → Linked Lists / Sliding Window / Binary Search → Trees. Individual tile and connector exports live in `public/roadmap`; the layout uses proportional positions in the reference canvas, while CSS clips the exported tile backdrop margins so they do not hide the connectors.
+
+Problem tables now extend flush to both workspace edges with uninterrupted horizontal separators and no rounded outer panel. Difficulty tags are 20% smaller (20.8px height, 11.2px type, 8px horizontal padding); their current text colors are green `#baedcc`, yellow `#fde99a`, and red `#fec7cd` for slightly higher contrast. Source palette values above record provenance.

@@ -41,7 +41,7 @@ export function ProblemList({ compact = false, topic, savedOnly = false }: Probl
           </div>
         </div>
       ) : null}
-      <div className="table-scroll">
+      <div className="table-scroll" role="region" aria-label="Practice problems" tabIndex={0}>
         <table className="problem-table">
           <thead>
             <tr><th className="status-column"><span className="sr-only">Solved</span></th><th>Problem</th><th>Difficulty</th><th className="topic-column">Topic</th><th className="acceptance-column">Acceptance</th><th className="save-column"><span className="sr-only">Bookmark</span></th></tr>

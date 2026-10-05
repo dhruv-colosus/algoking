@@ -41,7 +41,7 @@ Use an `aria-label` for icon-only buttons. Keep links as links and state-changin
 
 Tags are 22px tall, 14px type at line height 1, pill-shaped, with a 1px border. Size `md` uses 8px horizontal padding and `sm` uses 6px. Available tones are `blue`, `purple`, `green`, `moss`, `red`, `orange`, `amber`, `teal`, `yellow`, and `neutral`; exact triplets are in [design-system.md](design-system.md#tag-tones).
 
-Problem rows and detail headers reuse this primitive through `DifficultyTag`, which increases the height to 26px and uses 10px horizontal padding. Use text plus tone for difficulty and category labels. Tags are metadata, not controls; if a label filters data, provide a real button with selected state.
+Problem rows and detail headers reuse this primitive through `DifficultyTag`, which uses 20.8px height, 11.2px text, and 8px horizontal padding. Use text plus tone for difficulty and category labels. Tags are metadata, not controls; if a label filters data, provide a real button with selected state.
 
 ```tsx
 <Tag tone="green">Easy</Tag>
@@ -67,11 +67,13 @@ Use route-aware active links with `aria-current="page"`. Keep sidebar groups sho
 
 ## TopicCard
 
-`components/home/topic-card.tsx` renders an image-only topic link under `/algorithms/[slug]`. Show the complete local illustration at its natural aspect ratio; its existing heading identifies the category. Add no wrapper boundary, description, title, or metadata. The link has an accessible practice label and the image has topic alt text. Home shows all seven topics without the section heading or “Explore all topics” link: three tiles beside the hero and four beneath, across the full content width with 4px gaps. The tile beneath the hero is capped at 280px and right-aligned. Below 1200px, tiles follow the hero in three columns; at ≤560px, they form one centered column up to 280px wide with 3.2px gaps. Home artwork loads eagerly because all seven tiles sit in the desktop's initial view. The Linked Lists illustration is served directly from its local PNG because its optimized image request failed in the preview browser. Pointer movement updates CSS variables for subtle 3D tilt and a linear glare at 40% opacity; the radial gradient has been removed. Touch input skips the effect, reduced motion disables tilt, and keyboard focus remains visible. Optional image dimensions, sizes, and loading behavior support reuse with the exported roadmap artwork.
+`components/home/topic-card.tsx` renders a topic link under `/algorithms/[slug]` using the supplied illustration. Its existing heading identifies the category; add no duplicate title, description, or wrapper boundary. The optional `lessonCount` prop adds a plain-text label below the image and includes the count in the accessible practice label. Home passes the existing mock topic totals as lesson counts; these are sample curriculum totals, not a count of implemented lesson pages. Roadmap reuse omits the count.
+
+Home shows all seven topics beneath a centered heading, description, and action group. Four equal columns fill the desktop content width with 8px horizontal and 20px vertical gaps; at ≤1100px there are two columns and at ≤560px one full-width column. Home crops only the artwork's outer padding, making its visible edges fill each grid cell while keeping the illustration and title intact. Home artwork loads eagerly. The Linked Lists illustration is served directly from its local PNG because its optimized image request failed in the preview browser. Pointer movement updates CSS variables for subtle 3D tilt and a linear glare at 20% opacity, reduced from 40%. Touch input skips the effect, reduced motion disables tilt, and keyboard focus remains visible. Optional image dimensions, sizes, and loading behavior support reuse with the exported roadmap artwork.
 
 ## DifficultyTag
 
-`components/ui/difficulty-tag.tsx` wraps the source `Tag`: 26px height, 14px text, fully rounded corners, and 10px horizontal padding. Easy uses the full green palette, Medium yellow, and Hard red. These are the reference's opaque background/border/foreground triplets. Both problem tables and detail pages use this component.
+`components/ui/difficulty-tag.tsx` wraps the source `Tag`: 20.8px height, 11.2px text, fully rounded corners, and 8px horizontal padding. Easy uses the full green palette, Medium yellow, and Hard red. The opaque reference backgrounds and borders are retained, with slightly brighter text for contrast (`#baedcc`, `#fde99a`, `#fec7cd`). Both problem tables and detail pages use this component.
 
 ## ProblemList
 
@@ -79,13 +81,15 @@ Use route-aware active links with `aria-current="page"`. Keep sidebar groups sho
 
 `components/problems/use-problem-state.ts` stores bookmarks and solved overrides in browser local storage and synchronizes subscribed lists. `components/problems/problem-actions.tsx` reuses that state on a detail page. Static surrounding page content remains server-rendered where practical. If a list is filtered to no results, show a helpful empty state. Mock completion/saved state should not suggest a real backend account.
 
+Problem panels have no enclosing rounded border or raised background. Tables extend to both workspace edges using the main scroll container width, while headings and filters retain their page inset. The labeled table region supports keyboard focus and horizontal scrolling on mobile.
+
 The table preserves the reference's 38px header / 42px row heights and 12px cell padding. Body type is 14px on wide desktops and 12px at ≤1200px. `components/problems/progress-overview.tsx` derives sheet/topic completion from the same local solved state, using real progressbar semantics.
 
 ## Route and stylesheet map
 
 | Route | Composition |
 | --- | --- |
-| `/` | Text-only hero with five TopicCards in an L-shaped desktop layout, five-row compact ProblemList |
+| `/` | Centered text-only hero, seven TopicCards in four desktop columns with lesson totals, five-row compact ProblemList |
 | `/problems` | Searchable/filterable mock problem sheet |
 | `/problems/[slug]` | Sample statement/example when supplied, hint, next problem, solved/bookmark actions |
 | `/algorithms/[slug]` | Illustrated topic intro, pattern note, topic-filtered ProblemList; Algorithms stays selected in both navigation areas |
