@@ -1,48 +1,135 @@
+<div align="center">
+
 # Algoking
 
-A minimal DSA study dashboard built with Next.js App Router, TypeScript, React, and Tailwind CSS. The home view combines a sidebar dashboard, a concise text-only hero, supplied topic illustrations, and featured questions. Study routes contain realistic dummy content for reviewing the first version.
+**A little practice. A lot of progress.**
 
-## Run locally
+A minimal workspace for learning data structures and algorithms, recognizing patterns, and building a consistent practice habit.
+
+![Status: Preview](https://img.shields.io/badge/status-preview-e6c85d?style=flat-square)
+![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![React 19](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)
+![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+
+[Features](#features) · [Getting started](#getting-started) · [Project structure](#project-structure) · [Contributing](#contributing)
+
+</div>
+
+## Landing page
+
+![Algoking landing page showing the dark study dashboard, pattern illustrations, navigation, and featured practice problems](docs/images/landing-page.png)
+
+The overview brings learning patterns, a visual roadmap, and practice problems into one focused dashboard, with responsive navigation and locally bundled Geist typography.
+
+## Features
+
+- **Pattern-based learning** — explore Arrays & Hashing, Two Pointers, Stacks, Binary Search, Sliding Window, Linked Lists, and Trees.
+- **Searchable problem sheet** — browse 20 sample problems, search by title or topic, and filter by difficulty.
+- **Problem details** — review sample challenges, examples, and starting hints; use your preferred editor to write and run solutions.
+- **Algorithm reference** — read concise pattern explanations and time-complexity notes.
+- **Visual learning roadmap** — follow connected topics and choose what to practice next.
+- **Bookmarks and progress** — save problems, mark them solved, and revisit progress derived from the sample problem set.
+- **Quick search** — open the search dialog with `⌘ K` on macOS or `Ctrl K` on Windows/Linux.
+
+### Preview scope
+
+Algoking is currently a frontend preview backed by sample data in [`lib/data.ts`](lib/data.ts). Problem acceptance rates, lesson totals, topic counts, and streak indicators are illustrative. Some problem details contain placeholder content.
+
+Bookmarks and solved overrides persist in the current browser's local storage. There is no backend, authentication, cross-device synchronization, or built-in code execution. Settings are session-only preview controls.
+
+## Getting started
+
+### Requirements
+
+- Node.js **20.9 or later**
+- npm
+
+### Run locally
 
 ```bash
-npm install
+git clone https://github.com/dhruv-colosus/algoking.git
+cd algoking
+npm ci
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). The scripts also include:
+Open [http://localhost:3000](http://localhost:3000). The current preview requires no environment variables, API keys, or database setup.
+
+### Production build
 
 ```bash
-npm run lint
-npm run typecheck
 npm run build
 npm run start
 ```
 
-`npm run start` serves a completed production build. Geist and Geist Mono are bundled locally, so the app does not fetch its font at build time.
+The build script explicitly uses Webpack. Fonts are bundled in `public/fonts`, so the build does not need to download them.
 
-## Mock content and interactions
+## Development commands
 
-Study topics, problems, sample acceptance rates, and algorithms live in `lib/data.ts`. Search, difficulty filters, topic links, bookmarks, and solved toggles work with this mock data. Bookmarks and solved overrides persist in the current browser's local storage; there is no backend or sign-in. Dashboard counts and learning content are sample data.
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Next.js development server. |
+| `npm run build` | Create a production build with Webpack. |
+| `npm run start` | Serve the completed production build. |
+| `npm run lint` | Run ESLint across the project. |
+| `npm run typecheck` | Check TypeScript without emitting files. |
 
-The preview includes the problem sheet, problem/topic details, algorithms, roadmap, bookmarks, progress, and settings routes. Progress derives from the sample problems plus local solved changes. Settings controls are session-only placeholders.
+## Routes
 
-Topic illustrations live in `public/illustrations`. The home hero is text-only.
+| Route | View |
+| --- | --- |
+| `/` | Landing page and featured practice problems |
+| `/problems` | Searchable problem sheet with difficulty filters |
+| `/problems/[slug]` | Problem details, hints, and practice actions |
+| `/algorithms` | Algorithm and pattern overview |
+| `/algorithms/[slug]` | Pattern details and related problems |
+| `/topics/[slug]` | Alternate entry point for pattern details |
+| `/roadmap` | Visual learning roadmap |
+| `/bookmarks` | Saved problems |
+| `/progress` | Progress overview based on sample problems and local solved state |
+| `/settings` | Preview practice preferences |
 
-## Visual system
+## Project structure
 
-The visual system is adapted from [kargulstudio/sales-crm](https://github.com/kargulstudio/sales-crm), with its compact dark dashboard surfaces, Geist typography, pill buttons, tag palette, and inset shadows. Only the primitives and relevant styling are reused for the study product.
+```text
+app/                       App Router pages, shared layout, and styles
+components/
+  home/                    Illustrated topic cards
+  layout/                  Shared navigation and application shell
+  problems/                Problem lists, actions, and local state
+  ui/                      Reusable UI primitives
+lib/                       Sample study data and shared utilities
+public/                    Fonts, topic illustrations, and roadmap assets
+docs/                      Design documentation and preview images
+skills/algoking-design/    Project-local design guidance
+```
 
-- [Design tokens and geometry](docs/design-system.md)
+The stack combines Next.js App Router, React, TypeScript, and Tailwind CSS, with Lucide icons and shared component variants. Shell and home styles live in `app/globals.css`; secondary study-page layouts live in `app/secondary.css`.
+
+## Design documentation
+
+The visual system adapts the compact dark dashboard styling and selected UI primitives from [kargulstudio/sales-crm](https://github.com/kargulstudio/sales-crm) for a DSA study product.
+
+- [Design tokens and layout guidance](docs/design-system.md)
 - [Shared component contracts](docs/components.md)
-- [Reference snapshot and adaptation](docs/reference.md)
+- [Reference and adaptation record](docs/reference.md)
 - [Project-local design skill](skills/algoking-design/SKILL.md)
 
-The skill is included in the repository as reusable guidance; it is not installed globally.
+## Contributing
 
-## Validation
+Read [`AGENTS.md`](AGENTS.md) before making changes. For frontend work, follow the local design skill and linked component documentation to preserve the shared shell and existing styling. When using an AI coding agent, consult the installed Next.js guides in `node_modules/next/dist/docs/` for version-specific conventions.
 
-Lint, TypeScript, and the production Webpack build pass. The main routes return HTTP 200; unsupported topic and problem slugs return 404. Desktop and mobile views, search/filtering, and bookmark/solved persistence were checked in the browser.
+Before submitting compiled code changes, run:
 
-The production build uses Next.js's Webpack option because Turbopack's local worker port was restricted in this environment. npm currently reports five high-severity entries in the development linter dependency chain, all stemming from the `braces` advisory. The registry's current `braces` release has no patched version for that advisory; a forced downgrade of Next.js lint tooling was not applied.
+```bash
+npm run build
+npm run lint
+npm run typecheck
+```
 
-Style tokens and shell/home styles live in `app/globals.css`; study-page compositions live in `app/secondary.css`. The retained source primitives and the current Algoking additions are distinguished in the design documentation.
+Check meaningful UI changes at desktop and mobile widths, including keyboard navigation and visible focus states. Include a concise explanation of the change and relevant screenshots in your pull request.
+
+## Tags
+
+`dsa` · `data-structures` · `algorithms` · `coding-practice` · `interview-preparation` · `learning-platform` · `nextjs` · `react` · `typescript` · `tailwindcss`
