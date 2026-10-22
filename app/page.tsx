@@ -5,7 +5,7 @@ import TopicCard from "@/components/home/topic-card";
 import ProblemList from "@/components/problems/problem-list";
 import { topics } from "@/lib/data";
 
-const homeTopics = [...topics.slice(3, 5), ...topics.slice(0, 3), ...topics.slice(5)];
+const homeTopics = [...topics.slice(3, 5), ...topics.slice(0, 3), ...topics.slice(5, 7)];
 
 export default function Home() {
   return (

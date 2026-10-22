@@ -5,6 +5,15 @@ import ProblemList from "@/components/problems/problem-list";
 import Button from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { topics, problems, algorithms } from "@/lib/data";
+import { LinkedListLibrary } from "@/components/tutorials/linked-list-library";
+import { TreeLibrary } from "@/components/tutorials/tree-library";
+import { GraphLibrary } from "@/components/tutorials/graph-library";
+
+import { WindowLibrary } from "@/components/tutorials/sliding-window-library";
+
+import { StackLibrary } from "@/components/tutorials/stack-library";
+
+import { SearchLibrary } from "@/components/tutorials/binary-search-library";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -19,6 +28,12 @@ export default async function TopicPage({ params }: Props) {
   const { slug } = await params;
   const topic = topics.find((item) => item.slug === slug);
   if (!topic) notFound();
+  if (slug === "stacks") return <StackLibrary />;
+  if (slug === "binary-search") return <SearchLibrary />;
+  if (slug === "graphs") return <GraphLibrary />;
+  if (slug === "trees") return <TreeLibrary />;
+  if (slug === "linked-list") return <LinkedListLibrary />;
+  if (slug === "sliding-window") return <WindowLibrary />;
   const pattern = algorithms.find((algorithm) => algorithm.topic === topic.slug);
   const count = problems.filter((problem) => problem.topic === slug).length;
   return <div className="page-content"><Button href="/algorithms" variant="link" size="sm"><Icon name="chevron-right" size={14} /> All algorithms</Button><section className="panel topic-detail-hero"><div><span className="eyebrow">{topic.level.toUpperCase()} · {count} PRACTICE PROBLEMS</span><h1>{topic.title}</h1><p>{topic.description}</p><div className="topic-hero-meta"><span><Icon name="book" size={16} /> Learn the pattern</span><span><Icon name="code" size={16} /> Put it into practice</span></div></div><Image src={topic.image} alt="" width={250} height={170} className="topic-detail-image" /></section>{pattern ? <section className="panel pattern-note"><div className="pattern-note-icon"><Icon name="layers" size={20} /></div><div><span className="eyebrow">THE CORE IDEA</span><h2>{pattern.name}</h2><p>{pattern.description}</p></div><code className="complexity-pill">{pattern.complexity}</code></section> : null}<section className="panel problem-panel"><div className="section-heading panel-heading"><div><h2>A good place to practice</h2><p>Start simple, then build up to the next challenge.</p></div></div><ProblemList topic={slug} /></section></div>;

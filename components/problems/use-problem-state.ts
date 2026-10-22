@@ -6,7 +6,7 @@ import { problems, type Problem } from "@/lib/data";
 const BOOKMARK_KEY = "algoking-bookmarks-v1";
 const SOLVED_KEY = "algoking-solved-v1";
 const CHANGE_EVENT = "algoking-problem-state-change";
-const DEFAULT_BOOKMARKS = JSON.stringify(["two-sum", "binary-search", "valid-parentheses"]);
+const DEFAULT_BOOKMARKS = "[]";
 const DEFAULT_SOLVED = "{}";
 
 function readStorage(key: string, fallback: string) {

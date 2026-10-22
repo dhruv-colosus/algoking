@@ -6,6 +6,7 @@ import { Icon } from "@/components/ui/icon";
 import DifficultyTag from "@/components/ui/difficulty-tag";
 import { problems, getTopicTitle, type Difficulty } from "@/lib/data";
 import { useProblemState } from "./use-problem-state";
+import { PracticeLink } from "./practice-link";
 
 type ProblemListProps = { compact?: boolean; topic?: string; savedOnly?: boolean };
 
@@ -37,14 +38,14 @@ export function ProblemList({ compact = false, topic, savedOnly = false }: Probl
               <option value="Medium">Medium</option>
               <option value="Hard">Hard</option>
             </select>
-            <span className="result-count">{filteredProblems.length} problems</span>
+            <span className="result-count">{filteredProblems.length} {filteredProblems.length === 1 ? "problem" : "problems"}</span>
           </div>
         </div>
       ) : null}
       <div className="table-scroll" role="region" aria-label="Practice problems" tabIndex={0}>
         <table className="problem-table">
           <thead>
-            <tr><th className="status-column"><span className="sr-only">Solved</span></th><th>Problem</th><th>Difficulty</th><th className="topic-column">Topic</th><th className="acceptance-column">Acceptance</th><th className="save-column"><span className="sr-only">Bookmark</span></th></tr>
+            <tr><th className="status-column"><span className="sr-only">Solved</span></th><th>Problem</th><th>Difficulty</th><th className="topic-column">Topic</th>{topic ? <th scope="col">Practice</th> : null}<th className="save-column"><span className="sr-only">Bookmark</span></th></tr>
           </thead>
           <tbody>
             {visibleProblems.map((problem) => {
@@ -56,7 +57,7 @@ export function ProblemList({ compact = false, topic, savedOnly = false }: Probl
                   <td><Link className="problem-title" href={`/problems/${problem.slug}`}>{problem.title}</Link></td>
                   <td><DifficultyTag difficulty={problem.difficulty} /></td>
                   <td className="topic-column"><Link className="table-topic" href={`/algorithms/${problem.topic}`}>{getTopicTitle(problem.topic)}</Link></td>
-                  <td className="acceptance-column">{problem.acceptance}</td>
+                  {topic ? <td><PracticeLink slug={problem.slug} title={problem.title} /></td> : null}
                   <td className="save-column"><button type="button" className={`bookmark-toggle${bookmarked ? " is-bookmarked" : ""}`} aria-label={`${bookmarked ? "Remove bookmark" : "Bookmark"}: ${problem.title}`} aria-pressed={bookmarked} onClick={() => toggleBookmark(problem.id)}><Icon name="bookmark" size={17} /></button></td>
                 </tr>
               );
@@ -64,7 +65,7 @@ export function ProblemList({ compact = false, topic, savedOnly = false }: Probl
           </tbody>
         </table>
       </div>
-      {visibleProblems.length === 0 ? <div className="empty-state"><Icon name={savedOnly ? "bookmark" : "search"} size={24} /><h3>{savedOnly ? "A little space for your favorites" : "No problems found"}</h3><p>{savedOnly ? "Bookmark a problem to keep it here for later." : "Try a different title or difficulty."}</p><Link href="/problems" className="text-link">Browse all problems <Icon name="arrow-right" size={14} /></Link></div> : null}
+      {visibleProblems.length === 0 ? <div className="empty-state"><Icon name={savedOnly ? "bookmark" : "search"} size={24} /><h3>{savedOnly ? "A little space for your favorites" : problems.some((problem) => !topic || problem.topic === topic) ? "No problems found" : "No problems yet"}</h3><p>{savedOnly ? "Bookmark a problem to keep it here for later." : problems.some((problem) => !topic || problem.topic === topic) ? "Try a different title or difficulty." : "We’re adding tutorials one at a time. Start with Binary Search."}</p><Link href="/problems" className="text-link">Browse all problems <Icon name="arrow-right" size={14} /></Link></div> : null}
     </div>
   );
 }

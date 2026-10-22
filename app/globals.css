@@ -383,13 +383,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .problem-table th { height: 38px; text-align: left; color: var(--subtle); font-weight: 400; border-bottom: 1px solid var(--border); background: #181818; padding: 0 12px; }
 .problem-table td { height: 47px; padding: 0 12px; border-bottom: 1px solid var(--border); color: var(--soft); }
 .problem-table tbody tr:last-child td { border-bottom: 0; }
+.problem-table tbody tr { position: relative; }
 .problem-table tbody tr:hover { background: #1e1e1e; }
 .problem-table .status-column { width: 47px; padding-left: 16px; }
 .status-toggle { display: grid; place-items: center; width: 16px; height: 16px; border: 1px solid #4d4d4d; border-radius: 50%; color: var(--subtle); background: transparent; }
 .status-toggle.is-solved { border: 0; color: var(--status); }
 .problem-title { color: var(--foreground); font-weight: 400; white-space: nowrap; }
+.problem-title::after { position: absolute; inset: 0; content: ''; cursor: pointer; }
+.problem-title:focus-visible { outline: none; }
+.problem-title:focus-visible::after { outline: 2px solid var(--ring); outline-offset: -2px; }
+.problem-table :is(.status-toggle, .bookmark-toggle, .table-topic) { position: relative; z-index: 1; }
 .problem-title:hover { text-decoration: underline; text-underline-offset: 3px; }
 .table-topic { color: var(--muted-foreground); }
+.practice-link { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 6px; min-height: 30px; color: var(--soft); font-size: 12px; white-space: nowrap; }
+.practice-link:hover { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+.algorithm-problem-table { table-layout: fixed; min-width: 680px; }
+.algorithm-problem-table th:first-child { width: 47%; }
+.algorithm-problem-table th:nth-child(2) { width: 15%; }
+.algorithm-problem-table th:nth-child(3) { width: 23%; }
+.algorithm-problem-table th:last-child { width: 15%; }
+.algorithm-problem-table .problem-title { white-space: normal; display: inline-block; padding-block: 10px; line-height: 1.5; }
+.table-complexity { font-size: 12px; white-space: nowrap; }
 .acceptance-column { font-variant-numeric: tabular-nums; }
 .save-column { width: 47px; }
 .bookmark-toggle { display: grid; place-items: center; width: 24px; height: 24px; color: var(--subtle); border: 0; background: transparent; border-radius: 5px; }

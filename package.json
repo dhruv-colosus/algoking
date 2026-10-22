@@ -7,7 +7,16 @@
     "build": "next build --webpack",
     "start": "next start --hostname 0.0.0.0",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:sliding-window-code": "ALGOKING_VERIFY_SNIPPETS=1 node --test scripts/sliding-window.test.mjs",
+    "test:sliding-window": "node --test scripts/sliding-window.test.mjs",
+    "test:stacks": "node --test scripts/stack-algorithms.test.mjs",
+    "test:stacks-code": "ALGOKING_VERIFY_SNIPPETS=1 node --test scripts/stack-algorithms.test.mjs",
+    "test:graphs": "node --test scripts/graph-algorithms.test.mjs",
+    "test:linked-lists": "node --test scripts/linked-list-algorithms.test.mjs",
+    "test:trees": "node --test scripts/tree-algorithms.test.mjs",
+    "test:linked-lists-code": "ALGOKING_VERIFY_SNIPPETS=1 node --test scripts/linked-list-algorithms.test.mjs",
+    "test:binary-search": "node --test scripts/binary-search-algorithms.test.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -16,6 +25,7 @@
     "next": "^16.3.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "shiki": "^4.5.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {

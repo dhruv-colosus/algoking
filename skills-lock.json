@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "isometric-animation": {
+      "source": "iart-ai/explainer-video-skills",
+      "sourceType": "github",
+      "skillPath": "skills/isometric-animation/SKILL.md",
+      "computedHash": "3b7b114f3292526edb8f3da0436e2c722715e3cdc421d329c231fc8afe6f4dc5"
+    }
+  }
+}
