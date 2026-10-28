@@ -40,7 +40,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   function navLink(item: typeof mainLinks[number]) {
     const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(`${item.href}/`));
-    return <li key={item.href}><Button href={item.href} variant="nav" size="md" data-active={active} aria-current={active ? "page" : undefined} className="sidebar-link" onClick={() => setNavigationOpen(false)}><Icon name={item.icon} size={15} /><span>{item.label}</span>{item.count ? <CountBadge>{item.count}</CountBadge> : null}</Button></li>;
+    return <li key={item.href}><Button href={item.href} variant="nav" size="md" data-active={active} aria-current={active ? "page" : undefined} className="sidebar-link" onClick={() => setNavigationOpen(false)}><Icon name={item.icon} size={15} fill={active ? "currentColor" : "none"} /><span>{item.label}</span>{item.count ? <CountBadge>{item.count}</CountBadge> : null}</Button></li>;
   }
   const matches = query.trim() ? problems.filter((p) => `${p.title} ${p.topic}`.toLowerCase().includes(query.toLowerCase())).slice(0, 6) : problems.slice(0, 4);
 
