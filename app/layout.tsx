@@ -4,6 +4,7 @@ import AppShell from "@/components/layout/app-shell";
 import "./globals.css";
 import "./secondary.css";
 import "./tutorial.css";
+import "./fundamentals.css";
 
 const geist = localFont({ src: "../public/fonts/geist.woff2", variable: "--font-geist", display: "swap", weight: "100 900" });
 const geistMono = localFont({ src: "../public/fonts/geist-mono.woff2", variable: "--font-geist-mono", display: "swap", weight: "100 900" });

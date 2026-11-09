@@ -7,12 +7,18 @@ import Button from "@/components/ui/button";
 import CountBadge from "@/components/ui/count-badge";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { problems, topics } from "@/lib/data";
+import { courseModules, findLesson } from "@/lib/fundamentals/syllabus";
 
-const mainLinks: { href: string; label: string; icon: IconName; count?: number }[] = [
+const mainLinks: { href: string; label: string; icon: IconName; count?: number; exact?: boolean; outline?: boolean }[] = [
   { href: "/", label: "Overview", icon: "grid" },
   { href: "/problems", label: "Problem sheet", icon: "list", count: problems.length },
   { href: "/algorithms", label: "Algorithms", icon: "braces" },
   { href: "/roadmap", label: "Learning roadmap", icon: "route" },
+];
+const courseIcons: IconName[] = ["cpu", "terminal", "workflow"];
+const fundamentalsLinks: typeof mainLinks = [
+  { href: "/fundamentals", label: "Systems syllabus", icon: "layers", exact: true },
+  ...courseModules.map((course, index) => ({ href: `/fundamentals/${course.slug}`, label: course.shortTitle, icon: courseIcons[index] ?? "book", count: course.lessons.length, outline: courseIcons[index] !== "workflow" })),
 ];
 const libraryLinks: typeof mainLinks = [
   { href: "/bookmarks", label: "Bookmarks", icon: "bookmark" },
@@ -27,7 +33,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const searchDialog = useRef<HTMLDialogElement>(null);
   const helpDialog = useRef<HTMLDialogElement>(null);
   const currentTopic = pathname.startsWith("/algorithms/") ? topics.find((topic) => pathname === `/algorithms/${topic.slug}`) : undefined;
-  const pageLabel = currentTopic?.title ?? [...mainLinks, ...libraryLinks, { href: "/settings", label: "Settings" }].find((item) => item.href === pathname)?.label ?? "Problem workspace";
+  const [, section, courseSlug, lessonSlug] = pathname.split("/");
+  const currentLesson = section === "fundamentals" && courseSlug && lessonSlug ? findLesson(courseSlug, lessonSlug) : undefined;
+  const pageLabel = currentTopic?.title ?? currentLesson?.lesson.title ?? [...mainLinks, ...fundamentalsLinks, ...libraryLinks, { href: "/settings", label: "Settings" }].find((item) => item.href === pathname)?.label ?? "Problem workspace";
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -39,8 +47,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   function navLink(item: typeof mainLinks[number]) {
-    const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(`${item.href}/`));
-    return <li key={item.href}><Button href={item.href} variant="nav" size="md" data-active={active} aria-current={active ? "page" : undefined} className="sidebar-link" onClick={() => setNavigationOpen(false)}><Icon name={item.icon} size={15} fill={active ? "currentColor" : "none"} /><span>{item.label}</span>{item.count ? <CountBadge>{item.count}</CountBadge> : null}</Button></li>;
+    const active = pathname === item.href || (!item.exact && item.href !== "/" && pathname.startsWith(`${item.href}/`));
+    return <li key={item.href}><Button href={item.href} variant="nav" size="md" data-active={active} aria-current={active ? "page" : undefined} className="sidebar-link" onClick={() => setNavigationOpen(false)}><Icon name={item.icon} size={15} fill={active && !item.outline ? "currentColor" : "none"} /><span>{item.label}</span>{item.count ? <CountBadge>{item.count}</CountBadge> : null}</Button></li>;
   }
   const matches = query.trim() ? problems.filter((p) => `${p.title} ${p.topic}`.toLowerCase().includes(query.toLowerCase())).slice(0, 6) : problems.slice(0, 4);
 
@@ -50,7 +58,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {navigationOpen ? <button className="navigation-backdrop" aria-label="Close navigation" onClick={() => setNavigationOpen(false)} /> : null}
       <aside className={`sidebar ${navigationOpen ? "is-open" : ""}`} aria-label="Main navigation">
         <Link href="/" className="brand" onClick={() => setNavigationOpen(false)}><span className="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m6 10 4 5 6-8 6 8 4-5-3 14H9Z" fill="currentColor" /><path d="M11 27h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></span><span><strong>Algoking<span className="brand-period">.</span></strong></span></Link>
-        <div className="sidebar-scroll"><nav><div className="sidebar-section"><ul>{mainLinks.map(navLink)}</ul></div><div className="sidebar-section"><h2 className="sidebar-heading">YOUR LIBRARY</h2><ul>{libraryLinks.map(navLink)}</ul></div><div className="sidebar-section quick-links"><h2 className="sidebar-heading">QUICK LINKS</h2><ul>{[{ slug: "stacks", name: "Stacks", color: "#e5c85c" }, { slug: "arrays", name: "Arrays & hashing", color: "#eeb390" }, { slug: "binary-search", name: "Binary search", color: "#b7aee9" }, { slug: "trees", name: "Trees", color: "#b1ebc5" }, { slug: "graphs", name: "Graphs", color: "#e5c85c" }, { slug: "linked-list", name: "Linked lists", color: "#b7aee9" }, { slug: "sliding-window", name: "Sliding window", color: "#eeb390" }].map((item) => <li key={item.slug}><Button href={`/algorithms/${item.slug}`} variant="nav" size="md" className="sidebar-link" onClick={() => setNavigationOpen(false)}><span className="quick-dot" style={{ background: item.color }} /><span>{item.name}</span><Icon name="arrow-up-right" size={12} /></Button></li>)}</ul></div></nav></div>
+        <div className="sidebar-scroll"><nav><div className="sidebar-section"><ul>{mainLinks.map(navLink)}</ul></div><div className="sidebar-section"><h2 className="sidebar-heading">AGENTIC FUNDAMENTALS</h2><ul>{fundamentalsLinks.map(navLink)}</ul></div><div className="sidebar-section"><h2 className="sidebar-heading">YOUR LIBRARY</h2><ul>{libraryLinks.map(navLink)}</ul></div><div className="sidebar-section quick-links"><h2 className="sidebar-heading">QUICK LINKS</h2><ul>{[{ slug: "stacks", name: "Stacks", color: "#e5c85c" }, { slug: "arrays", name: "Arrays & hashing", color: "#eeb390" }, { slug: "binary-search", name: "Binary search", color: "#b7aee9" }, { slug: "trees", name: "Trees", color: "#b1ebc5" }, { slug: "graphs", name: "Graphs", color: "#e5c85c" }, { slug: "linked-list", name: "Linked lists", color: "#b7aee9" }, { slug: "sliding-window", name: "Sliding window", color: "#eeb390" }].map((item) => <li key={item.slug}><Button href={`/algorithms/${item.slug}`} variant="nav" size="md" className="sidebar-link" onClick={() => setNavigationOpen(false)}><span className="quick-dot" style={{ background: item.color }} /><span>{item.name}</span><Icon name="arrow-up-right" size={12} /></Button></li>)}</ul></div></nav></div>
         <div className="sidebar-bottom"><div className="sidebar-support"><Button href="/settings" variant="nav" size="md" className="sidebar-link" onClick={() => setNavigationOpen(false)}><Icon name="settings" size={15} /><span>Settings</span></Button><Button variant="nav" size="md" className="sidebar-link" onClick={() => helpDialog.current?.showModal()}><Icon name="help" size={15} /><span>A little guidance</span></Button></div><Link href="/settings" className="sidebar-account" onClick={() => setNavigationOpen(false)}><span className="avatar">D</span><span><strong>Dhruv</strong></span><Icon name="chevron-down" size={14} /></Link></div>
       </aside>
 
