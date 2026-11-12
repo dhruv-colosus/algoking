@@ -35,7 +35,7 @@ export const topics: Topic[] = [
   { slug: "sliding-window", title: "Sliding Window", description: "Move your window. Keep what matters.", image: "/illustrations/sliding-window.png", solved: 2, total: 15, level: "Intermediate" },
   { slug: "linked-list", title: "Linked Lists", description: "Connect the dots with a little pointer magic.", image: "/illustrations/linked-list.png", solved: 3, total: 18, level: "Intermediate" },
   { slug: "trees", title: "Trees", description: "Explore branches. Discover recursive thinking.", image: "/illustrations/trees.png", solved: 5, total: 28, level: "Intermediate" },
-  { slug: "graphs", title: "Graphs", description: "Traversals, shortest paths, spanning trees, and connectivity.", image: "", solved: 0, total: graphAlgorithms.length, level: "Intermediate" },
+  { slug: "graphs", title: "Graphs", description: "Traversals, shortest paths, spanning trees, and connectivity.", image: "/illustrations/graphs.png", solved: 0, total: graphAlgorithms.length, level: "Intermediate" },
 ];
 
 export const problems: Problem[] = [
