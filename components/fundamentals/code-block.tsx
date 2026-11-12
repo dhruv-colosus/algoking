@@ -3,7 +3,7 @@ import type { CodeLanguage } from "@/lib/fundamentals/types";
 import { Rich } from "./rich-text";
 import { CopyButton } from "./copy-button";
 
-const labels: Record<CodeLanguage, string> = { ts: "TypeScript", js: "JavaScript", c: "C", bash: "Shell", text: "Text" };
+const labels: Record<CodeLanguage, string> = { ts: "TypeScript", js: "JavaScript", c: "C", bash: "Shell", json: "JSON", text: "Text" };
 
 export async function CodeBlock({ code, lang, file, note }: { code: string; lang: CodeLanguage; file: string; note?: string }) {
   const source = code.replace(/\n$/, "");

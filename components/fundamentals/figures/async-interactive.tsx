@@ -1,20 +1,8 @@
 "use client";
 
 import { useId, useState } from "react";
-import Button from "@/components/ui/button";
-import { Icon } from "@/components/ui/icon";
+import { StepControls } from "./controls";
 import { Segmented } from "./segmented";
-
-function StepControls({ index, total, onChange }: { index: number; total: number; onChange: (next: number) => void }) {
-  const last = index === total - 1;
-  return <div className="fx-step-controls">
-    <span className="fx-step-count">Step {String(index + 1).padStart(2, "0")} <span>/ {total}</span></span>
-    <div className="fx-buttons">
-      <Button variant="ghost" size="sm" disabled={index === 0} onClick={() => onChange(index - 1)}><Icon name="arrow-right" className="back-icon" size={13} />Previous</Button>
-      <Button variant={last ? "secondary" : "primary"} size="sm" onClick={() => onChange(last ? 0 : index + 1)}>{last ? "Start again" : "Next step"}<Icon name={last ? "shuffle" : "arrow-right"} size={13} /></Button>
-    </div>
-  </div>;
-}
 
 /* ---------- Race interleaving ---------- */
 

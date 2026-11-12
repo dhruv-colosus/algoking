@@ -7,7 +7,7 @@ import Button from "@/components/ui/button";
 import CountBadge from "@/components/ui/count-badge";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { problems, topics } from "@/lib/data";
-import { courseModules, findLesson } from "@/lib/fundamentals/syllabus";
+import { findLesson, isPublished, phases } from "@/lib/fundamentals/syllabus";
 
 const mainLinks: { href: string; label: string; icon: IconName; count?: number; exact?: boolean; outline?: boolean }[] = [
   { href: "/", label: "Overview", icon: "grid" },
@@ -15,11 +15,16 @@ const mainLinks: { href: string; label: string; icon: IconName; count?: number; 
   { href: "/algorithms", label: "Algorithms", icon: "braces" },
   { href: "/roadmap", label: "Learning roadmap", icon: "route" },
 ];
-const courseIcons: IconName[] = ["cpu", "terminal", "workflow"];
-const fundamentalsLinks: typeof mainLinks = [
-  { href: "/fundamentals", label: "Systems syllabus", icon: "layers", exact: true },
-  ...courseModules.map((course, index) => ({ href: `/fundamentals/${course.slug}`, label: course.shortTitle, icon: courseIcons[index] ?? "book", count: course.lessons.length, outline: courseIcons[index] !== "workflow" })),
-];
+const courseIcons: Record<string, IconName> = {
+  "machine-reality": "cpu", "operating-systems": "terminal", "concurrency-and-async": "workflow",
+  "networking-and-tcp": "network", "tls-http-and-quic": "lock", "streaming-and-rpc": "radio", serialization: "binary", compression: "archive",
+};
+const syllabusLink: typeof mainLinks[number] = { href: "/fundamentals", label: "Systems syllabus", icon: "layers", exact: true };
+const fundamentalsGroups = phases.map((phase) => ({
+  label: `Phase ${phase.number} · ${phase.title}`,
+  links: phase.modules.filter(isPublished).map((course) => ({ href: `/fundamentals/${course.slug}`, label: course.shortTitle, icon: courseIcons[course.slug] ?? "book", count: course.lessons.length, outline: true })),
+})).filter((group) => group.links.length > 0);
+const fundamentalsLinks: typeof mainLinks = [syllabusLink, ...fundamentalsGroups.flatMap((group) => group.links)];
 const libraryLinks: typeof mainLinks = [
   { href: "/bookmarks", label: "Bookmarks", icon: "bookmark" },
   { href: "/progress", label: "My progress", icon: "chart" },
@@ -58,7 +63,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {navigationOpen ? <button className="navigation-backdrop" aria-label="Close navigation" onClick={() => setNavigationOpen(false)} /> : null}
       <aside className={`sidebar ${navigationOpen ? "is-open" : ""}`} aria-label="Main navigation">
         <Link href="/" className="brand" onClick={() => setNavigationOpen(false)}><span className="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m6 10 4 5 6-8 6 8 4-5-3 14H9Z" fill="currentColor" /><path d="M11 27h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></span><span><strong>Algoking<span className="brand-period">.</span></strong></span></Link>
-        <div className="sidebar-scroll"><nav><div className="sidebar-section"><ul>{mainLinks.map(navLink)}</ul></div><div className="sidebar-section"><h2 className="sidebar-heading">AGENTIC FUNDAMENTALS</h2><ul>{fundamentalsLinks.map(navLink)}</ul></div><div className="sidebar-section"><h2 className="sidebar-heading">YOUR LIBRARY</h2><ul>{libraryLinks.map(navLink)}</ul></div><div className="sidebar-section quick-links"><h2 className="sidebar-heading">QUICK LINKS</h2><ul>{[{ slug: "stacks", name: "Stacks", color: "#e5c85c" }, { slug: "arrays", name: "Arrays & hashing", color: "#eeb390" }, { slug: "binary-search", name: "Binary search", color: "#b7aee9" }, { slug: "trees", name: "Trees", color: "#b1ebc5" }, { slug: "graphs", name: "Graphs", color: "#e5c85c" }, { slug: "linked-list", name: "Linked lists", color: "#b7aee9" }, { slug: "sliding-window", name: "Sliding window", color: "#eeb390" }].map((item) => <li key={item.slug}><Button href={`/algorithms/${item.slug}`} variant="nav" size="md" className="sidebar-link" onClick={() => setNavigationOpen(false)}><span className="quick-dot" style={{ background: item.color }} /><span>{item.name}</span><Icon name="arrow-up-right" size={12} /></Button></li>)}</ul></div></nav></div>
+        <div className="sidebar-scroll"><nav><div className="sidebar-section"><ul>{mainLinks.map(navLink)}</ul></div><div className="sidebar-section"><h2 className="sidebar-heading">AGENTIC FUNDAMENTALS</h2><ul>{navLink(syllabusLink)}</ul>{fundamentalsGroups.map((group) => <div key={group.label} className="sidebar-subgroup"><h3 className="sidebar-subheading">{group.label}</h3><ul>{group.links.map(navLink)}</ul></div>)}</div><div className="sidebar-section"><h2 className="sidebar-heading">YOUR LIBRARY</h2><ul>{libraryLinks.map(navLink)}</ul></div><div className="sidebar-section quick-links"><h2 className="sidebar-heading">QUICK LINKS</h2><ul>{[{ slug: "stacks", name: "Stacks", color: "#e5c85c" }, { slug: "arrays", name: "Arrays & hashing", color: "#eeb390" }, { slug: "binary-search", name: "Binary search", color: "#b7aee9" }, { slug: "trees", name: "Trees", color: "#b1ebc5" }, { slug: "graphs", name: "Graphs", color: "#e5c85c" }, { slug: "linked-list", name: "Linked lists", color: "#b7aee9" }, { slug: "sliding-window", name: "Sliding window", color: "#eeb390" }].map((item) => <li key={item.slug}><Button href={`/algorithms/${item.slug}`} variant="nav" size="md" className="sidebar-link" onClick={() => setNavigationOpen(false)}><span className="quick-dot" style={{ background: item.color }} /><span>{item.name}</span><Icon name="arrow-up-right" size={12} /></Button></li>)}</ul></div></nav></div>
         <div className="sidebar-bottom"><div className="sidebar-support"><Button href="/settings" variant="nav" size="md" className="sidebar-link" onClick={() => setNavigationOpen(false)}><Icon name="settings" size={15} /><span>Settings</span></Button><Button variant="nav" size="md" className="sidebar-link" onClick={() => helpDialog.current?.showModal()}><Icon name="help" size={15} /><span>A little guidance</span></Button></div><Link href="/settings" className="sidebar-account" onClick={() => setNavigationOpen(false)}><span className="avatar">D</span><span><strong>Dhruv</strong></span><Icon name="chevron-down" size={14} /></Link></div>
       </aside>
 
