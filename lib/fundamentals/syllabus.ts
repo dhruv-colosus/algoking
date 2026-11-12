@@ -1,24 +1,25 @@
+import { compression } from "./compression";
 import { concurrencyAndAsync } from "./concurrency-and-async";
 import { machineReality } from "./machine-reality";
+import { networking } from "./networking";
 import { operatingSystems } from "./operating-systems";
+import { serialization } from "./serialization";
+import { streamingRpc } from "./streaming-rpc";
+import { tlsHttpQuic } from "./tls-http-quic";
 import type { CourseModule, Lesson, Phase, PlannedModule } from "./types";
 
-export const courseModules: CourseModule[] = [machineReality, operatingSystems, concurrencyAndAsync];
+const phaseOne: CourseModule[] = [machineReality, operatingSystems, concurrencyAndAsync];
+const phaseTwo: CourseModule[] = [networking, tlsHttpQuic, streamingRpc, serialization, compression];
+export const courseModules: CourseModule[] = [...phaseOne, ...phaseTwo];
 
 export const phases: Phase[] = [
   {
     number: 1, title: "The machine", weeks: 5, outcome: "Where time goes inside one process",
-    modules: courseModules,
+    modules: phaseOne,
   },
   {
     number: 2, title: "Bytes on the wire", weeks: 8, outcome: "Every byte of a request, and why it is shaped that way",
-    modules: [
-      { number: 4, title: "Networking from packets to TCP", summary: "Framing, windows, congestion control and the cold-connection tax." },
-      { number: 5, title: "TLS, HTTP/1.1, HTTP/2, HTTP/3 and QUIC", summary: "Where head-of-line blocking lives, and what each version moved." },
-      { number: 6, title: "Streaming and RPC", summary: "SSE, WebSocket, gRPC and everything that breaks an LLM stream." },
-      { number: 7, title: "Serialization", summary: "JSON, Protobuf by hand, columnar formats and cache-stable prompts." },
-      { number: 8, title: "Compression", summary: "Repeat removal, entropy coding, dictionaries and length oracles." },
-    ],
+    modules: phaseTwo,
   },
   {
     number: 3, title: "State and failure", weeks: 5, outcome: "What survives a crash, and how you would know",

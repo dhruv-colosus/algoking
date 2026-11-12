@@ -3,7 +3,7 @@ import {
   Code2, BookOpen, Route, ChartNoAxesCombined, Settings2, LayoutGrid, Layers,
   Clock3, Play, CircleCheck, ExternalLink, X, ChevronDown, PanelLeft, Bell,
   Flame, HelpCircle, Sparkles, ListChecks, GitBranch, Command, Braces, Target,
-  Ellipsis, Shuffle, Pause, Cpu, SquareTerminal, Workflow, Network,
+  Ellipsis, Shuffle, Pause, Cpu, SquareTerminal, Workflow, Network, Lock, Radio, Binary, Archive,
 } from "lucide-react";
 import type { ComponentProps } from "react";
 
@@ -16,7 +16,7 @@ const icons = {
   menu: PanelLeft, bell: Bell, flame: Flame, help: HelpCircle, sparkles: Sparkles,
   list: ListChecks, branch: GitBranch, command: Command, braces: Braces, target: Target,
   more: Ellipsis, shuffle: Shuffle, pause: Pause, cpu: Cpu, terminal: SquareTerminal,
-  workflow: Workflow, network: Network,
+  workflow: Workflow, network: Network, lock: Lock, radio: Radio, binary: Binary, archive: Archive,
 };
 
 export type IconName = keyof typeof icons;

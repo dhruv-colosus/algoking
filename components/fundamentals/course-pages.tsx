@@ -23,9 +23,9 @@ function SyllabusStack() {
   const slabs = [...phases].reverse();
   return <svg className="fundamentals-stack" viewBox="0 0 600 316" role="img" aria-labelledby="stack-title stack-desc">
     <title id="stack-title">Four phases stacked from the machine upward</title>
-    <desc id="stack-desc">Phase 1, the machine, is the foundation and is published. Bytes on the wire, state and failure, and surfaces and agents stack on top of it.</desc>
+    <desc id="stack-desc">{`The machine is the foundation, then bytes on the wire, state and failure, and surfaces and agents. Published: ${phases.filter((p) => p.modules.some(isPublished)).map((p) => p.title).join(" and ")}.`}</desc>
     {slabs.map((phase, i) => {
-      const y = 60 + i * gap, live = phase.number === 1;
+      const y = 60 + i * gap, live = phase.modules.some(isPublished);
       return <g key={phase.number} className={`stack-slab${live ? " is-live" : ""}`}>
         <path className="slab-left" d={`M ${cx - 130} ${y} L ${cx} ${y + 38} L ${cx} ${y + 56} L ${cx - 130} ${y + 18} Z`} />
         <path className="slab-right" d={`M ${cx} ${y + 38} L ${cx + 130} ${y} L ${cx + 130} ${y + 18} L ${cx} ${y + 56} Z`} />
@@ -40,13 +40,14 @@ function SyllabusStack() {
 }
 
 export function FundamentalsOverview() {
-  const first = courseModules[0];
+  const livePhases = phases.filter((p) => p.modules.some(isPublished));
+  const startOf = (phase: (typeof phases)[number]) => phase.modules.find(isPublished)!;
   return <div className="page-content fundamentals-page">
     <section className="fundamentals-hero">
       <div>
         <h1>Agentic computer fundamentals.</h1>
         <p>A systems course for agent and harness engineers. It starts with bits in a register and works up to a model token turning into a safe action. Every module runs from first principles to what production systems use in late 2026.</p>
-        <div className="fundamentals-hero-actions"><Button href={coursePath(first)} variant="primary">Start Phase 1<Icon name="arrow-right" size={14} /></Button><span className="graph-lesson-count">{lessonCount} lessons published · 4 phases · 15 modules</span></div>
+        <div className="fundamentals-hero-actions">{livePhases.map((phase, i) => <Button key={phase.number} href={coursePath(startOf(phase))} variant={i === livePhases.length - 1 ? "primary" : "secondary"}>Start Phase {phase.number}<Icon name="arrow-right" size={14} /></Button>)}<span className="graph-lesson-count">{lessonCount} lessons published · 4 phases · 15 modules</span></div>
       </div>
       <SyllabusStack />
     </section>
@@ -136,7 +137,7 @@ export function LessonPage({ course, lesson, index }: { course: CourseModule; le
   const previous = index > 0 ? { href: lessonPath(course, course.lessons[index - 1]), label: "Previous lesson", title: course.lessons[index - 1].title }
     : prevCourse ? { href: lessonPath(prevCourse, prevCourse.lessons.at(-1)!), label: `Module ${pad(prevCourse.number)}`, title: prevCourse.lessons.at(-1)!.title } : { href: "/fundamentals", label: "Back to", title: "Systems syllabus" };
   const next = index < course.lessons.length - 1 ? { href: lessonPath(course, course.lessons[index + 1]), label: "Next lesson", title: course.lessons[index + 1].title }
-    : nextCourse ? { href: lessonPath(nextCourse, nextCourse.lessons[0]), label: `Next module · ${nextCourse.shortTitle}`, title: nextCourse.lessons[0].title } : { href: "/fundamentals", label: "Phase 1 complete", title: "Systems syllabus" };
+    : nextCourse ? { href: lessonPath(nextCourse, nextCourse.lessons[0]), label: `Next module · ${nextCourse.shortTitle}`, title: nextCourse.lessons[0].title } : { href: "/fundamentals", label: "Every published lesson complete", title: "Systems syllabus" };
   const headings = lesson.blocks.filter((b) => b.kind === "h").map((b) => (b as { text: string }).text);
 
   return <article className="page-content course-lesson">
@@ -159,6 +160,11 @@ export function LessonPage({ course, lesson, index }: { course: CourseModule; le
           <div className="course-practice-grid">{lesson.practice.map(([title, text]) => <div key={title} className="panel"><strong>{title}</strong><p><Rich text={text} /></p></div>)}</div>
         </section>
 
+        {lesson.terms?.length ? <section className="panel course-terms" aria-labelledby="terms-heading">
+          <h2 id="terms-heading">Words to know</h2>
+          <dl>{lesson.terms.map(([term, definition]) => <div key={term}><dt>{term}</dt><dd><Rich text={definition} /></dd></div>)}</dl>
+        </section> : null}
+
         <section aria-labelledby="check-heading">
           <h2 id="check-heading" className="course-h">Check yourself</h2>
           <p className="course-p">Answer out loud before you open each one.</p>
@@ -177,7 +183,7 @@ export function LessonPage({ course, lesson, index }: { course: CourseModule; le
           <div className="course-progress" aria-hidden="true"><span style={{ width: `${((index + 1) / course.lessons.length) * 100}%` }} /></div>
           <ol>{course.lessons.map((item, i) => <li key={item.slug}><Link href={lessonPath(course, item)} aria-current={i === index ? "page" : undefined} className={i < index ? "is-before" : ""}><span>{pad(i + 1)}</span>{item.title}</Link></li>)}</ol>
         </nav>
-        {headings.length ? <nav className="course-onpage" aria-label="On this page"><span className="course-outline-title">On this page</span><ul>{headings.map((h) => <li key={h}><a href={`#${slugify(h)}`}>{h}</a></li>)}<li><a href="#practice-heading">Where you will meet it</a></li><li><a href="#check-heading">Check yourself</a></li></ul></nav> : null}
+        {headings.length ? <nav className="course-onpage" aria-label="On this page"><span className="course-outline-title">On this page</span><ul>{headings.map((h) => <li key={h}><a href={`#${slugify(h)}`}>{h}</a></li>)}<li><a href="#practice-heading">Where you will meet it</a></li>{lesson.terms?.length ? <li><a href="#terms-heading">Words to know</a></li> : null}<li><a href="#check-heading">Check yourself</a></li></ul></nav> : null}
       </aside>
     </div>
 
