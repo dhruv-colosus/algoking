@@ -6,6 +6,7 @@ const gfg = (slug: string): PracticeLink => ({ platform: "GFG", url: `https://ww
 // Explicit problem destinations: lesson slugs do not always match platform slugs.
 export const practiceLinks: Record<string, PracticeLink | undefined> = {
   "binary-search": leetcode("binary-search"),
+  "smallest-unique-subarray": leetcode("smallest-unique-subarray"),
   "maximum-sum-subarray-k": gfg("max-sum-subarray-of-size-k5313"),
   "maximum-vowels": leetcode("maximum-number-of-vowels-in-a-substring-of-given-length"),
   "first-negative-in-window": gfg("first-negative-integer-in-every-window-of-size-k3345"),

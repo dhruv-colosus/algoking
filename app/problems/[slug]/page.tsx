@@ -18,6 +18,9 @@ import { StackTutorial } from "@/components/tutorials/stack-tutorial";
 import { searchAlgorithms } from "@/lib/binary-search-catalog";
 import { SearchTutorial } from "@/components/tutorials/binary-search-tutorial";
 
+import { miscAlgorithms } from "@/lib/misc-catalog";
+import { MiscTutorial } from "@/components/tutorials/misc-tutorial";
+
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() { return problems.map(({ slug }) => ({ slug })); }
@@ -49,5 +52,8 @@ export default async function ProblemPage({ params }: Props) {
 
   const searchAlgorithm = searchAlgorithms.find((algorithm) => algorithm.slug === slug);
   if (searchAlgorithm) return <SearchTutorial algorithm={searchAlgorithm} problem={problem} />;
+
+  const miscAlgorithm = miscAlgorithms.find((algorithm) => algorithm.slug === slug);
+  if (miscAlgorithm) return <MiscTutorial algorithm={miscAlgorithm} problem={problem} />;
   notFound();
 }

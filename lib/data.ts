@@ -5,6 +5,7 @@ import { treeAlgorithms } from "./tree-catalog";
 import { windowAlgorithms } from "./sliding-window-catalog";
 
 import { stackAlgorithms } from "./stack-catalog";
+import { miscAlgorithms } from "./misc-catalog";
 
 export type Difficulty = "Easy" | "Medium" | "Hard";
 
@@ -36,6 +37,7 @@ export const topics: Topic[] = [
   { slug: "linked-list", title: "Linked Lists", description: "Connect the dots with a little pointer magic.", image: "/illustrations/linked-list.png", solved: 3, total: 18, level: "Intermediate" },
   { slug: "trees", title: "Trees", description: "Explore branches. Discover recursive thinking.", image: "/illustrations/trees.png", solved: 5, total: 28, level: "Intermediate" },
   { slug: "graphs", title: "Graphs", description: "Traversals, shortest paths, spanning trees, and connectivity.", image: "/illustrations/graphs.png", solved: 0, total: graphAlgorithms.length, level: "Intermediate" },
+  { slug: "miscellaneous", title: "Miscellaneous Topics", description: "Rolling hash and other techniques outside the main patterns.", image: "/illustrations/arrays.png", solved: 0, total: miscAlgorithms.length, level: "Advanced" },
 ];
 
 export const problems: Problem[] = [
@@ -45,6 +47,7 @@ export const problems: Problem[] = [
   ...linkedListAlgorithms.map((algorithm) => ({ id: algorithm.slug, title: algorithm.title, slug: algorithm.slug, difficulty: algorithm.difficulty, topic: "linked-list", solved: false })),
   ...treeAlgorithms.map((algorithm) => ({ id: algorithm.slug, title: algorithm.title, slug: algorithm.slug, difficulty: algorithm.difficulty, topic: "trees", solved: false })),
   ...graphAlgorithms.map((algorithm) => ({ id: algorithm.slug, title: algorithm.title, slug: algorithm.slug, difficulty: algorithm.difficulty, topic: "graphs", solved: false })),
+  ...miscAlgorithms.map((algorithm) => ({ id: algorithm.slug, title: algorithm.title, slug: algorithm.slug, difficulty: algorithm.difficulty, topic: "miscellaneous", solved: false })),
 ];
 
 export const algorithms = [

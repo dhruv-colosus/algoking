@@ -28,7 +28,7 @@ function WindowDiagram({ scenario, step, id }: { scenario: WindowScenario; step:
   </svg>;
 }
 
-export function WindowWalkthrough({ scenarios, title }: { scenarios: WindowScenario[]; title: string }) {
+export function WindowWalkthrough({ scenarios, title, subtitle = "Expand, shrink, and inspect the window state." }: { scenarios: WindowScenario[]; title: string; subtitle?: string }) {
   const [scenarioIndex, setScenarioIndex] = useState(0);
   const [stepIndex, setStepIndex] = useState(0);
   const id = useId();
@@ -38,7 +38,7 @@ export function WindowWalkthrough({ scenarios, title }: { scenarios: WindowScena
   const parameters = [scenario.k !== undefined ? `k = ${scenario.k}` : "", scenario.target !== undefined ? `target = ${scenario.target}` : "", scenario.pattern ? `pattern = ${scenario.pattern}` : ""].filter(Boolean).join(" · ");
 
   return <section className="panel search-walkthrough graph-walkthrough window-walkthrough" aria-labelledby={`${id}-heading`}>
-    <div className="tutorial-section-heading"><div><h2 id={`${id}-heading`}>See {title}, step by step</h2><p>Expand, shrink, and inspect the window state.</p></div><label className="target-select">Example <select value={scenarioIndex} onChange={(event) => { setScenarioIndex(Number(event.target.value)); setStepIndex(0); }}>{scenarios.map((item, index) => <option key={item.id} value={index}>{item.label}</option>)}</select></label></div>
+    <div className="tutorial-section-heading"><div><h2 id={`${id}-heading`}>See {title}, step by step</h2><p>{subtitle}</p></div><label className="target-select">Example <select value={scenarioIndex} onChange={(event) => { setScenarioIndex(Number(event.target.value)); setStepIndex(0); }}>{scenarios.map((item, index) => <option key={item.id} value={index}>{item.label}</option>)}</select></label></div>
     <div className="search-scene-layout graph-scene-layout">
       <div className="search-illustration graph-illustration">
         <div className="scene-caption"><span>{scenario.values.length} elements · zero-based indices</span><strong>{parameters}</strong></div>
